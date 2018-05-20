@@ -1,6 +1,7 @@
 package com.sky.library.interfaces;
 
 import com.sky.library.exception.BookNotFoundException;
+import com.sky.library.exception.BookReferenceIncorrectException;
 import com.sky.library.pojo.Book;
 
 /*
@@ -9,7 +10,7 @@ import com.sky.library.pojo.Book;
  */
 public interface BookService {
 
-    Book retrieveBook(String bookReference) throws BookNotFoundException;
+    Book retrieveBook(String bookReference) throws BookNotFoundException, BookReferenceIncorrectException;
 
-    String getBookSummary(String bookReference) throws BookNotFoundException;
+    String getBookSummary(String bookReference) throws BookNotFoundException, BookReferenceIncorrectException;
 }
