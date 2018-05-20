@@ -1,4 +1,4 @@
-package com.sky.library;
+package com.sky.library.pojo;
 
 /*
  * Copyright © 2015 Sky plc All Rights reserved.

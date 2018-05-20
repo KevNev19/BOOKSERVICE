@@ -4,9 +4,15 @@ package com.sky.library;
  * Copyright © 2015 Sky plc All Rights reserved.
  * Please do not make your solution publicly available in any way e.g. post in forums or commit to GitHub.
  */
+import com.sky.library.exception.BookNotFoundException;
+import com.sky.library.interfaces.BookRepository;
+import com.sky.library.pojo.Book;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+@RunWith(SpringJUnit4ClassRunner.class)
 public class BookRepositoryStub implements BookRepository {
 
     private static final String BOOK_REFERENCE_PREFIX = "BOOK-";
@@ -14,6 +20,8 @@ public class BookRepositoryStub implements BookRepository {
     private static final String THE_GRUFFALO_REFERENCE = BOOK_REFERENCE_PREFIX + "GRUFF472";
     private static final String WINNIE_THE_POOH_REFERENCE = BOOK_REFERENCE_PREFIX + "POOH222";
     private static final String THE_WIND_IN_THE_WILLOWS_REFERENCE = BOOK_REFERENCE_PREFIX + "WILL987";
+
+    static final String BOOK_REFERENCE_MUST_BEGIN_WITH_BOOK = "book reference must begin with BOOK-";
 
     private static final Map<String, Book> books;
 
@@ -27,7 +35,14 @@ public class BookRepositoryStub implements BookRepository {
                 + "in his rowing boat. They get along well and spend many more days boating, with Rat teaching Mole the ways of the river."));
     }
 
-    public Book retrieveBook(String reference) {
-        return books.get(reference);
+    public Book retrieveBook(String reference) throws BookNotFoundException {
+        if (!reference.startsWith("BOOK-")) {
+            throw new BookNotFoundException(BOOK_REFERENCE_MUST_BEGIN_WITH_BOOK);
+        }
+        Book book = books.get(reference);
+        if (null == book) {
+            throw new BookNotFoundException("reference " + reference + "  not found.");
+        }
+        return book;
     }
 }
