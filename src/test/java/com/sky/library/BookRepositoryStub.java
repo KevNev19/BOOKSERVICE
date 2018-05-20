@@ -9,6 +9,9 @@ import com.sky.library.interfaces.BookRepository;
 import com.sky.library.pojo.Book;
 import java.util.HashMap;
 import java.util.Map;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -44,5 +47,21 @@ public class BookRepositoryStub implements BookRepository {
             throw new BookNotFoundException("reference " + reference + "  not found.");
         }
         return book;
+    }
+
+    @Test
+    public void should_retrieve_book_success() throws BookNotFoundException {
+        String bookref = "BOOK-GRUFF472";
+        Book book = retrieveBook(bookref);
+        assertNotNull(book);
+        assertEquals(bookref, book.getReference());
+    }
+    
+    @Test(expected = BookNotFoundException.class)
+    public void should_not_retrieve_book() throws BookNotFoundException {
+        String bookref = "INVALID";
+        Book book = retrieveBook(bookref);
+        assertNotNull(book);
+        assertEquals(bookref, book.getReference());
     }
 }
